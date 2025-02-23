@@ -11,6 +11,11 @@ public class CharaController : MonoBehaviour
 
     private Quaternion targetRotation;
 
+    private void Start()
+    {
+        SpeedRotation *= 360;
+    }
+
     void Update()
     {
         _translation.x = Input.GetAxisRaw("Horizontal");
@@ -21,11 +26,24 @@ public class CharaController : MonoBehaviour
     {
         if (_translation != Vector3.zero)
         {
-            transform.Translate(_translation * Speed * Time.deltaTime, Space.World);
+            Movements();
 
-            targetRotation = Quaternion.LookRotation(_translation);
-            float angle = Mathf.MoveTowardsAngle(transform.eulerAngles.y, targetRotation.eulerAngles.y, SpeedRotation * Time.deltaTime);
-            transform.eulerAngles = Vector3.up * angle;
+            Rotation();
         }
     }
+
+    private void Movements()
+    {
+        transform.Translate(_translation * Speed * Time.deltaTime, Space.World);
+    }
+
+    private void Rotation()
+    {
+        targetRotation = Quaternion.LookRotation(_translation);
+        float angle = Mathf.MoveTowardsAngle(transform.eulerAngles.y, targetRotation.eulerAngles.y, SpeedRotation * Time.deltaTime);
+        transform.eulerAngles = Vector3.up * angle;
+
+
+    }
+
 }
